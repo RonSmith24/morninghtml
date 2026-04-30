@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Video Generator</title>
+  <style>
+    body { font-family: Arial; background:#0f172a; color:white; text-align:center; padding:40px;}
+    input, select, button { padding:10px; margin:10px; width:300px;}
+    button { background:#22c55e; color:white; border:none; cursor:pointer;}
+  </style>
+</head>
+<body>
+
+<h1>🎬 AI Video Generator</h1>
+
+<input type="text" id="prompt" placeholder="Masukkan ide konten..."><br>
+
+<select id="style">
+  <option value="motivasi">Motivasi</option>
+  <option value="psikologi">Psikologi</option>
+  <option value="storytelling">Storytelling</option>
+</select><br>
+
+<select id="duration">
+  <option value="15">15 Detik</option>
+  <option value="30">30 Detik</option>
+</select><br>
+
+<button onclick="generateVideo()">🚀 Generate Video</button>
+
+<p id="status"></p>
+
+<script>
+async function generateVideo() {
+  const prompt = document.getElementById("prompt").value;
+  const style = document.getElementById("style").value;
+  const duration = document.getElementById("duration").value;
+
+  document.getElementById("status").innerText = "⏳ Generating...";
+
+  const res = await fetch("/generate", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({prompt, style, duration})
+  });
+
+  const data = await res.json();
+
+  document.getElementById("status").innerHTML =
+    `✅ Done! <br><a href="${data.video}" target="_blank">Download Video</a>`;
+}
+</script>
+
+</body>
+</html>
